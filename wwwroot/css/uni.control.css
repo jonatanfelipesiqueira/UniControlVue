@@ -1,0 +1,11 @@
+﻿.titulo-personalizado {
+    font: normal 11pt Arial;
+    font-weight: bold;
+    background-color: #e0edf7;
+    text-transform: uppercase;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}

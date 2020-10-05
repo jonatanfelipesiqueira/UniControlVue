@@ -1,0 +1,75 @@
+﻿@{
+    var mensagemAcao = TempData["Mensagem"];
+}
+
+@section Styles
+{
+    <link href="~/lib/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/datatables/css/dataTables.checkboxes.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/dataTables.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<div class="container-fluid p-0">
+    <h1 class="h3 mb-2 text-gray-800">Consulta de Empresas</h1>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Tabela de Empresas</h6>
+        </div>
+        <div class="card-body p-0">
+            <a type="button" class="btn btn-primary ml-4 mt-2" asp-controller="Empresa" asp-action="Cadastrar">Nova Empresa</a>
+            <table class="table table-striped table-hover table-sm nowrap" width="100%" cellspacing="0" id="lista-empresa"></table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables/js/dataTables.checkboxes.min.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables/js/dataTables.custom.js" asp-append-version="true"></script>
+    <script src="~/lib/sweetalert2/js/sweetalert2.all.js" asp-append-version="true"></script>
+    <script src="~/lib/sweetalert2/js/sweetalert2.constantes.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        var tabela;
+
+        $(document).ready(function () {
+            carregarTabela();
+            if ('@mensagemAcao'.length > 0) {
+                mensagemSucesso('@mensagemAcao');
+            }
+        });
+
+        function carregarTabela() {
+            debugger ;
+            const opcoes = {
+                id: 'lista-empresa',
+                url: `@Url.Action("Listar")`,
+                order: [[0, "asc"]],
+                columns: [
+                    { "data": "Id", "name": "Id", "title": "Código" },
+                    { "data": "NomeRazaoSocial", "name": "NomeRazaoSocial", "title": "Nome/Razao Social" },
+                    { "data": "NomeFantasia", "name": "NomeFantasia", "title": "Fantasia" },
+                    { "data": "CPFCNPJ", "name": "CPFCNPJ", "title": "CPF / CNPJ" },
+                    { "data": "DataCadastro", "name": "DataCadastro", "title": "Data Cadastro" },
+
+                    {
+                        "title": "Ações",
+                        "render": function(data, type, objeto, meta) {
+                            return `<a class="btn btn-light btn-xs ripple" href="@Url.Action("Cadastrar")/${objeto.Id}"><i class="far fa-edit icone-botao-tabela"></i>Editar</a>`
+                                + ` | <button class="btn btn-light btn-xs ripple" onclick="alertaExcluirCaixa('${objeto.Id}')"><i class="far fa-trash-alt icone-botao-tabela"></i>Excluir</button>`;
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        "targets": [6],
+                        "searchable": false,
+                        "orderable": false
+                    }
+                ]
+            };
+            tabela = DataTableCustom.gerar(opcoes);
+        }
+    </script>
+}

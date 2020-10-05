@@ -1,0 +1,82 @@
+﻿@using WEB.Models.Extensions
+<div class="modal fade" id="modal-cadastrar" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cadastrar Contato</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formulario-cadastrar" autocomplete="off">
+                <div class="modal-body">
+
+                    <div class="form-row">
+                        <!--CAMPO ID-->
+                        <input hidden="" id="ContatoId" name="Id" />
+
+                        <!--CAMPO NOME FANTASIA-->
+                        <div class="form-group col-12">
+                            <label for="ContatoNome">Nome</label>
+                            <input class="form-control" id="ContatoNome" name="NomeFantasia" autocomplete="off" />
+                        </div>
+                        <!--CAMPO TELEFONE-->
+                        <div class="form-group col-12">
+                            <label for="ContatoNome">Telefone</label>
+                            <input class="form-control" id="ContatoTelefone" name="Telefone" autocomplete="off" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <partial name="Components/_BotoesCadastro" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginScripts())
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#formulario-cadastrar").validate({
+                rules: {
+                    NomeFantasia: {
+                        required: true
+                    }
+                },
+                messages: {
+                    NomeFantasia: {
+                        required: "O nome é obrigatorio"
+                    }
+                },
+                submitHandler: enviarFormulario
+            });
+        });
+
+        $("#modal-cadastrar").on("shown.bs.modal", function (event) {
+            $('input[name="NomeFantasia"]').focus();
+        });
+
+        $("#modal-cadastrar").on("hidden.bs.modal", function () {
+            $("#ContatoNome").val("");
+            $("#ContatoTelefone").val("");
+        });
+
+        function enviarFormulario(formulario) {
+            $.ajax({
+                url: `@Url.Action("Salvar", "Contato")`,
+                type: "POST",
+                dataType: "json",
+                data: $(formulario).serialize(),
+                success: function(resposta) {
+                    recarregarTabela();
+                    alert(resposta.Mensagem);
+                    $('#modal-cadastrar').modal("hide");
+                },
+                error: erroComValidacao
+            });
+        }
+    </script>
+}

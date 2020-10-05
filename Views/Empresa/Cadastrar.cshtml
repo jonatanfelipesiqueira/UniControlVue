@@ -1,0 +1,138 @@
+﻿@{
+    var idUrl = Url.ActionContext.RouteData.Values["id"];
+}
+
+<h4>@(idUrl == null ? "Nova" : "Editar") Empresa</h4>
+<hr />
+
+<div class="titulo-personalizado">dados principais</div>
+
+<form id="formulario-cadastrar-empresa" autocomplete="off">
+    <input id="EmpresaId" name="Id" hidden />
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label for="EmpresaCPFCNPJ">CPF / CNPJ</label>
+            <input type="text" class="form-control" id="EmpresaCPFCNPJ" name="CPFCNPJ" placeholder="CPF / CNPJ" maxlength="30" autocomplete="of" />
+        </div>
+        <div class="form-group col-5">
+            <label for="EmpresaNomeRazaoSocial">Nome / Razao Social</label>
+            <input type="text" class="form-control" id="EmpresaNomeRazaoSocial" name="NomeRazaoSocial" placeholder="Nome ou Razao Social" autocomplete="of" />
+        </div>
+        <div class="form-group col-4">
+            <label for="EmpresaNomeFantasia">Nome Fantasia</label>
+            <input type="text" class="form-control" id="EmpresaNomeFantasia" name="NomeFantasia" placeholder="Fantasia" autocomplete="of" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-3">
+            <label for="EmpresaInscricaoEstadual">Inscricao Estadual</label>
+            <input type="text" class="form-control" id="EmpresaInscricaoEstadual" name="InscricaoEstadual" placeholder="Inscricao Estadual" autocomplete="of" />
+        </div>
+        <div class="form-group col-2">
+            <label for="EmpresaTelefone">Telefone</label>
+            <input type="text" class="form-control" id="EmpresaTelefone" name="Telefone" placeholder="Telefone" maxlength="15" autocomplete="of" />
+        </div>
+        <div class="form-group col-2">
+            <label for="EmpresaCelular">Celular</label>
+            <input type="text" class="form-control" id="EmpresaCelular" name="Celular" placeholder="Celular" maxlength="15" autocomplete="of" />
+        </div>
+    </div>
+    @if (idUrl != null)
+    {
+        <div class="form-row">
+            <div class="form-group">
+                <div class="custom-control custom-checkbox ml-1" style="font-size:16px">
+                    <input type="checkbox" class="custom-control-input" id="EmpresaSituacao" name="Situacao">
+                    <label class="custom-control-label" for="EmpresaSituacao" id="lbEmpresaSituacao">Desativar Cadastro</label>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="titulo-personalizado">endereço</div>
+    <div class="form-row">
+        <div class="form-group col-2">
+            <label for="EmpresaCelular">Endereço</label>
+            <input type="text" class="form-control" id="EmpresaCelular" name="Celular" placeholder="Celular" maxlength="15" autocomplete="of" />
+        </div>
+    </div>
+    <div class="titulo-personalizado">Contrato</div>
+
+    <partial name="Components/_BotoesCadastro" />
+</form>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-mask/jquery.mask.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            carregarPagina();
+            $('#EmpresaTelefone').mask('(99)99999-9999');
+            $('#EmpresaCelular').mask('(99)99999-9999');
+            $('#EmpresaCPFCNPJ').focus();
+
+            $("#formulario-cadastrar-empresa").validate({
+                rules: {
+                    NomeRazaoSocial: {
+                        required: true
+                    },
+                    NomeFantasia: {
+                        required: true
+                    }
+                },
+                messages: {
+                    NomeRazaoSocial: {
+                        required: "O Nome / RazaoSocial é obrigatório"
+                    },
+                    NomeFantasia: {
+                        required: "O Nome Fantasia é obrigatório"
+                    }
+                },
+                submitHandler: enviarFormularioEmpresa
+            });
+        });
+
+        function enviarFormularioEmpresa(formulario) {
+            $.ajax({
+                url: `@Url.Action("Salvar")`,
+                type: "POST",
+                dataType: "json",
+                data: $(formulario).serialize(),
+                success: function () {
+					window.location.replace('@Url.Action("Index")');
+                },
+                error: erroComValidacao
+            });
+        }
+
+        function carregarPagina() {
+            const id = '@idUrl';
+            if (id.length > 0) {
+                $.ajax({
+                    url: `@Url.Action("Pagina")`,
+                    type: "POST",
+                    dataType: "json",
+                    data: { id },
+                    success: function (resposta) {
+                        $("#EmpresaId").val(resposta.Id);
+                        $("#EmpresaNomeRazaoSocial").val(resposta.Codigo);
+                        //$("#CaixaDescricao").val(resposta.Descricao);
+                        if (resposta.Situacao) {
+                            $("#EmpresaSituacao").prop("checked", true);
+                            $("#lbEmpresaSituacao").html("Clique para Desativar");
+                        }
+                    },
+                    error: erroComValidacao
+                });
+            }
+        }
+
+        $("#EmpresaSituacao").change(function () {
+            if (this.checked) {
+                $("#lbEmpresaSituacao").html("Desativar Cadastro");
+            } else {
+                $("#lbEmpresaSituacao").html("Ativar Cadastro");
+            }
+        });
+    </script>
+}

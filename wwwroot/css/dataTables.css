@@ -1,0 +1,129 @@
+﻿/*#region Datatable*/
+
+.input-group-text {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: ##ecf0f5;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+div.dataTables_wrapper div.dataTables_length select {
+    width: auto;
+    display: inline-block;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 4px 4px;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+}
+
+.dropdown-menu-filtros {
+    padding: 2px;
+    max-height: 200px;
+    max-width: 200px;
+    color: #415710;
+    background-color: #ecf0f5;
+    border: 1px solid #ced4da;
+}
+
+    .dropdown-menu-filtros > span {
+        text-align: center;
+        padding: 0 1px 1px 0;
+    }
+
+#local-info,
+#local-pag,
+#local-resultado {
+    font-size: 0.7rem !important;
+}
+
+#datatable-row-bottom {
+    margin-top: 5px;
+}
+
+.dataTables_filter,
+.dataTables_info {
+    float: left !important
+}
+
+    .dataTables_filter input {
+        width: 100% !important;
+    }
+
+.dataTables_paginate {
+    float: right !important
+}
+
+    .dataTables_paginate li a:hover {
+        color: #fff;
+        background-color: #415710;
+        border-color: none;
+        box-shadow: none;
+    }
+
+.table > thead > tr > th {
+    text-transform: uppercase;
+    color: #36404a !important;
+    font-size: 14px
+}
+
+.table > tbody > tr > td {
+    color: #36404a !important;
+    font-size: 14px
+}
+
+.icone-botao-tabela {
+    font-size: 15px;
+    color: #000;
+    margin-right: 5px;
+}
+
+.dataTables_empty {
+    text-align: center !important
+}
+
+.acoes-personalizado {
+    margin-left: 5px;
+}
+
+.dropdown-menu-inputs-filtro {
+    min-width: 25rem !important
+}
+
+.margin-top-30 {
+    margin-top: 30px !important
+}
+
+@media(max-width:540px) {
+    .margin-top-30 {
+        margin-top: 10px !important
+    }
+}
+
+/*#endregion DataTables*/
+
+/*#region Botao-Tabela*/
+.btn-group-xs > .btn,
+.btn-xs {
+    padding: 2px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+
+table tbody tr td .btn {
+    min-width: 58px !important
+}
+
+/*#endregion Botao-Tabela*/
